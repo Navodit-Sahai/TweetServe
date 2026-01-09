@@ -1,0 +1,1 @@
+const {LikeRepository}=require('../repository/index')
