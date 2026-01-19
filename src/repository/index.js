@@ -4,5 +4,6 @@ module.exports={
     HashtagRepository:require('./hashtag-repository'),
     CrudRepository:require('./crud-repository'),
     LikeRepository:require('./like-repository'),
-    CommentRepository:require('./comment-repository')
+    CommentRepository:require('./comment-repository'),
+    UserRepository:require('./user-repository')
 }

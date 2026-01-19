@@ -1,9 +1,10 @@
 const mongoose=require('mongoose');
-
+const bcrypt=require('bcrypt');
+const jwt=require('jsonwebtoken');
 const userSchema=new mongoose.Schema({
     email:{
         type:String,
-        requried:true,
+        required:true,
         unique:true
     },
     password:{
@@ -15,5 +16,19 @@ const userSchema=new mongoose.Schema({
         required:true
     }
 })
+userSchema.pre('save',function(){
+    const user=this;
+    const SALT=bcrypt.genSaltSync(9);
+    const encryptedPassword=bcrypt.hashSync(user.password,SALT);
+    user.password=encryptedPassword;
+})
+userSchema.methods.comparePassword=function compare(password){
+    return bcrypt.compareSync(password,this.password);
+}
+userSchema.methods.genJWT=function generate(){
+    return jwt.sign({id:this.id,email:this.email},'twitter_secret',{
+        expiresIn: '1h'
+    });
+}
 const User=mongoose.model('User',userSchema);
 module.exports=User;
